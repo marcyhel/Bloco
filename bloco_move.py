@@ -9,6 +9,7 @@ class BlocoMove(Bloco):
 	def update(self):
 
 		if(self.dir==0):
-
-			self.x+=1
-			self.rect = pygame.Rect(self.x,self.y,self.larg,self.alt)
+			pass
+			#print(self.mover(self.dir))
+			#self.x+=1
+			#self.rect = pygame.Rect(self.x,self.y,self.larg,self.alt)

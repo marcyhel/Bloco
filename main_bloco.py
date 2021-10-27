@@ -75,7 +75,7 @@ class Main:
 				pos = pygame.mouse.get_pos()
 				self.tab.rasta(pos)
 			self.screen.fill((10,10,10))
-			self.clock.tick(60)
+			self.clock.tick(3)
 
 
 			self.render(self.screen)

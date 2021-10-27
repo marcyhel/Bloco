@@ -16,7 +16,7 @@ class Tabuleiro:
 		self.area_move(inix=0,fimx=3,iniy=0,fimy=5)
 		self.area_move(inix=5,fimx=9,iniy=6,fimy=9)
 		self.add_peca(2,3,3)
-		self.add_peca(9,1,3)
+		#self.add_peca(9,1,3)
 		self.add_peca(2,1,4)
 	def inicializa(self):
 		for i in range(self.alt):
