@@ -1,6 +1,8 @@
 import pygame
 from bloco import *
 from bloco_move import *
+from bloco_duplica import *
+import random
 class Tabuleiro:
 	def __init__(self,root,larg,alt,deslocaMundo=[0,0],resolucao=(600,600)):
 		self.root=root 
@@ -13,11 +15,20 @@ class Tabuleiro:
 		self.deslocaMundo=deslocaMundo
 		self.inicializa()
 		
-		self.area_move(inix=0,fimx=3,iniy=0,fimy=5)
+		self.area_move(inix=0,fimx=15,iniy=0,fimy=10)
 		self.area_move(inix=5,fimx=9,iniy=6,fimy=9)
-		self.add_peca(2,3,3)
-		#self.add_peca(9,1,3)
-		self.add_peca(2,1,4)
+		self.add_peca(0,3,3,dir=0)
+		self.add_peca(5,0,3,dir=1)
+		#for i in range(5):
+		#	self.add_peca(random.randint(0,8),random.randint(0,8),3,dir=random.randint(0,3))
+		self.add_peca(2,2,4)
+		self.add_peca(4,3,4)
+		self.add_peca(8,3,4)
+
+		self.add_peca(9,8,4)
+		self.add_peca(7,8,4)
+
+		self.add_peca(8,8,5,dir=0)
 	def inicializa(self):
 		for i in range(self.alt):
 			aux=[]
@@ -27,13 +38,15 @@ class Tabuleiro:
 				aux2.append(Bloco(self,j*self.grade+self.deslocaMundo[0],i*self.grade+self.deslocaMundo[1],self.grade-1,self.grade-1,tipo=0))
 			self.tab_pecas.append(aux2)
 			self.tab.append(aux)
-	def add_peca(self,x,y,tipo):
+	def add_peca(self,x,y,tipo,dir=0):
 		if(tipo==3):
-			self.tab_pecas[y][x]=BlocoMove(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg)
+			self.tab_pecas[y][x]=BlocoMove(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,dir=dir)
+		if(tipo==5):
+			self.tab_pecas[y][x]=BlocoDuplica(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,dir=dir)
 		if(tipo==0):
-			self.tab_pecas[y][x]=Bloco(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,tipo=0)
+			self.tab_pecas[y][x]=Bloco(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,tipo=0,dir=dir)
 		if(tipo==4):
-			self.tab_pecas[y][x]=Bloco(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,tipo=4)
+			self.tab_pecas[y][x]=Bloco(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,tipo=4,dir=dir)
 	def area_move(self,inix=0,iniy=0,fimx=0,fimy=0):
 		for i in range(iniy,fimy):
 			
@@ -62,19 +75,26 @@ class Tabuleiro:
 	def update(self):
 		for i in self.tab_pecas:
 			for j in i:
-				
-				j.update()
-					
-	def render(self,screen):
-		for i in self.tab:
-			for j in i:
-				j.render(screen)
-		#aux pra renderizar o item arrastado em primeiro plano
-		aux=0
+				if(not j.att):
+					j.update()
 		for i in self.tab_pecas:
 			for j in i:
-				if(j.select):
-					aux=j
-				j.render(screen)
-		if(aux!=0):
-			aux.render(screen)
+				
+				j.reset()
+					
+	def render(self,screen):
+		try:
+			for i in self.tab:
+				for j in i:
+					j.render(screen)
+			#aux pra renderizar o item arrastado em primeiro plano
+			aux=0
+			for i in self.tab_pecas:
+				for j in i:
+					if(j.select):
+						aux=j
+					j.render(screen)
+			if(aux!=0):
+				aux.render(screen)
+		except:
+			pass
