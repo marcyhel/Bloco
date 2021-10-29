@@ -2,6 +2,10 @@ import pygame
 from bloco import *
 from bloco_move import *
 from bloco_duplica import *
+from bloco_estatico import *
+from bloco_direcional import *
+from bloco_gira import *
+
 import random
 class Tabuleiro:
 	def __init__(self,root,larg,alt,deslocaMundo=[0,0],resolucao=(600,600)):
@@ -10,12 +14,12 @@ class Tabuleiro:
 		self.tab_pecas = []
 		self.alt = alt
 		self.larg = larg
-		self.grade=resolucao[0]/40
+		self.grade=resolucao[0]/35
 		self.resolucao = resolucao
 		self.deslocaMundo=deslocaMundo
 		self.inicializa()
 		
-		self.area_move(inix=0,fimx=15,iniy=0,fimy=10)
+		self.area_move(inix=0,fimx=17,iniy=0,fimy=17)
 		self.area_move(inix=5,fimx=9,iniy=6,fimy=9)
 		self.add_peca(0,3,3,dir=0)
 		self.add_peca(5,0,3,dir=1)
@@ -26,9 +30,15 @@ class Tabuleiro:
 		self.add_peca(8,3,4)
 
 		self.add_peca(9,8,4)
-		self.add_peca(7,8,4)
+		self.add_peca(11,8,4)
 
-		self.add_peca(8,8,5,dir=0)
+		self.add_peca(10,8,5,dir=1)
+		#self.add_peca(15,8,5,dir=0)
+		#self.add_peca(15,15,6,dir=0)
+		#self.add_peca(15,19,7,dir=0)
+		#self.add_peca(18,19,7,dir=1)
+		#self.add_peca(10,19,8,dir=0)
+		#self.add_peca(0,19,8,dir=1)
 	def inicializa(self):
 		for i in range(self.alt):
 			aux=[]
@@ -43,6 +53,12 @@ class Tabuleiro:
 			self.tab_pecas[y][x]=BlocoMove(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,dir=dir)
 		if(tipo==5):
 			self.tab_pecas[y][x]=BlocoDuplica(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,dir=dir)
+		if(tipo==6):
+			self.tab_pecas[y][x]=BlocoEstatico(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,dir=dir)
+		if(tipo==7):
+			self.tab_pecas[y][x]=BlocoDirecional(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,dir=dir)
+		if(tipo==8):
+			self.tab_pecas[y][x]=BlocoGira(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,dir=dir)
 		if(tipo==0):
 			self.tab_pecas[y][x]=Bloco(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,tipo=0,dir=dir)
 		if(tipo==4):
@@ -73,6 +89,11 @@ class Tabuleiro:
 						j.seleciona()
 	
 	def update(self):
+		for i in self.tab_pecas:
+			for j in i:
+				if(j.tipo==8):
+					if(not j.att):
+						j.update()
 		for i in self.tab_pecas:
 			for j in i:
 				if(not j.att):

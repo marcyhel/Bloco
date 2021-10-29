@@ -40,10 +40,28 @@ class Bloco:
 				return False
 		except:
 			return False
+	def verifica_move_dir(self,x,y,dir):
+		try:
+			if(self.tab.tab_pecas[y][x].tipo!=6 ):
+				if(self.tab.tab_pecas[y][x].tipo==7):
+					if((dir == 0 or dir == 2) and (self.tab.tab_pecas[y][x].dir==1 or self.tab.tab_pecas[y][x].dir ==3)):
+						return True
+					elif((dir == 1 or dir == 3) and (self.tab.tab_pecas[y][x].dir==0 or self.tab.tab_pecas[y][x].dir ==2)):
+						return True
+					else:
+						return False
+					
+				else:
+					return True
+			else:
+				return False
+		except:
+			return False
+
 	def verifica_move(self,x,y):
 		
 		try:
-			if(self.tab.tab_pecas[y][x].tipo==0 and x>=0 and y>=0):
+			if(self.tab.tab_pecas[y][x].tipo==0 and x>=0 and y>=0  ):
 				return True
 			else:
 				return False
@@ -60,71 +78,75 @@ class Bloco:
 		self.xx=int((self.x-self.tab.deslocaMundo[0])/self.tab.grade)
 		self.yy=int((self.y-self.tab.deslocaMundo[1])/self.tab.grade)
 		
-
 	def empurra(self,dir,x,y):
-		
 		try:
 			if(self.tab.tab_pecas[y][x].tipo!=0):
 				#print("d")
 				if(dir==0):
-					if(self.tab.tab_pecas[y][x].verifica_move(x,y)):	
-						self.tab.tab_pecas[y][x].mover(dir)
+					if(self.tab.tab_pecas[y][x].verifica_move(x,y)and self.verifica_move_dir(x,y,dir)):	
+						if(self.verifica_move_dir(x,y,dir)):
+							self.tab.tab_pecas[y][x].mover(dir)
 					else:
 						
-						self.tab.tab_pecas[y][x].empurra(dir,x+1,y)
-						self.tab.tab_pecas[y][x].mover(dir)
+						
+						if(self.verifica_move_dir(x,y,dir)):
+							self.tab.tab_pecas[y][x].empurra(dir,x+1,y)
+							self.tab.tab_pecas[y][x].mover(dir)
 						
 				if(dir==1):
-					if(self.tab.tab_pecas[y][x].verifica_move(x,y)):	
-						self.tab.tab_pecas[y][x].mover(dir)	
+					if(self.tab.tab_pecas[y][x].verifica_move(x,y) ):	
+							self.tab.tab_pecas[y][x].mover(dir)
 					else:
 						
-						self.tab.tab_pecas[y][x].empurra(dir,x,y+1)
-						self.tab.tab_pecas[y][x].mover(dir)
+						
+						if(self.verifica_move_dir(x,y,dir)):
+							self.tab.tab_pecas[y][x].empurra(dir,x,y+1)
+							self.tab.tab_pecas[y][x].mover(dir)
 				if(dir==2):
-					if(self.tab.tab_pecas[y][x].verifica_move(x,y)):	
-						self.tab.tab_pecas[y][x].mover(dir)
+					if(self.tab.tab_pecas[y][x].verifica_move(x,y) and self.verifica_move_dir(x,y,dir)):	
+						if(self.verifica_move_dir(x,y,dir)):
+							self.tab.tab_pecas[y][x].mover(dir)
 					else:
 						
-						self.tab.tab_pecas[y][x].empurra(dir,x-1,y)
-						self.tab.tab_pecas[y][x].mover(dir)
+						
+						if(self.verifica_move_dir(x,y,dir)):
+							self.tab.tab_pecas[y][x].empurra(dir,x-1,y)
+							self.tab.tab_pecas[y][x].mover(dir)
 				if(dir==3):
-					if(self.tab.tab_pecas[y][x].verifica_move(x,y)):	
+					if(self.tab.tab_pecas[y][x].verifica_move(x,y) and self.verifica_move_dir(x,y,dir)):	
 						self.tab.tab_pecas[y][x].mover(dir)	
 					else:
 						
-						self.tab.tab_pecas[y][x].empurra(dir,x,y-1)
-						self.tab.tab_pecas[y][x].mover(dir)
 						
+						if(self.verifica_move_dir(x,y,dir)):
+							self.tab.tab_pecas[y][x].empurra(dir,x,y-1)
+							self.tab.tab_pecas[y][x].mover(dir)
 			else:
 				pass
-				#print("fim")
-						
-
 		except:
-			#print("ue")
 			return False
 
 	def duplica_bloco_de_tras(self,dir):
-		try:
-			if(dir==0):
-				if(self.tab.tab_pecas[self.yy][self.xx-1].tipo!=0 and self.verifica_move(self.yy,self.xx+1)):
-					self.tab.tab_pecas[self.yy][self.xx+1].tipo=copy.copy(self.tab.tab_pecas[self.yy][self.xx-1].tipo)
-					self.tab.tab_pecas[self.yy][self.xx+1].dir=copy.copy(self.tab.tab_pecas[self.yy][self.xx-1].dir)
-			if(dir==1):
-				if(self.tab.tab_pecas[self.yy-1][self.xx].tipo!=0 and self.verifica_move(self.yy+1,self.xx)):
-					self.tab.tab_pecas[self.yy+1][self.xx].tipo=copy.copy(self.tab.tab_pecas[self.yy-1][self.xx].tipo)
-					self.tab.tab_pecas[self.yy+1][self.xx].dir=copy.copy(self.tab.tab_pecas[self.yy-1][self.xx].dir)
-			if(dir==2):
-				if(self.tab.tab_pecas[self.yy][self.xx+1].tipo!=0 and self.verifica_move(self.yy,self.xx-1)):
-					self.tab.tab_pecas[self.yy][self.xx-1].tipo=copy.copy(self.tab.tab_pecas[self.yy][self.xx+1].tipo)
-					self.tab.tab_pecas[self.yy][self.xx-1].dir=copy.copy(self.tab.tab_pecas[self.yy][self.xx+1].dir)
-			if(dir==3):
-				if(self.tab.tab_pecas[self.yy+1][self.xx].tipo!=0 and self.verifica_move(self.yy-1,self.xx)):
-					self.tab.tab_pecas[self.yy-1][self.xx].tipo=copy.copy(self.tab.tab_pecas[self.yy+1][self.xx].tipo)
-					self.tab.tab_pecas[self.yy-1][self.xx].dir=copy.copy(self.tab.tab_pecas[self.yy+1][self.xx].dir)
-		except:
-			print("erro Duplica")
+		
+		if(dir==0):
+			if(self.tab.tab_pecas[self.yy][self.xx-1].tipo!=0 and self.verifica_move(self.xx+1,self.yy)):
+			
+				self.tab.add_peca(self.xx+1,self.yy,self.tab.tab_pecas[self.yy][self.xx-1].tipo,dir=self.tab.tab_pecas[self.yy][self.xx-1].dir)
+				self.tab.tab_pecas[self.yy][self.xx+1].att=True
+			
+		if(dir==1):
+			if(self.tab.tab_pecas[self.yy-1][self.xx].tipo!=0 and self.verifica_move(self.xx,self.yy+1)):
+				self.tab.add_peca(self.xx,self.yy+1,self.tab.tab_pecas[self.yy-1][self.xx].tipo,dir=self.tab.tab_pecas[self.yy-1][self.xx].dir)
+				self.tab.tab_pecas[self.yy+1][self.xx].att=True
+		if(dir==2):
+			if(self.tab.tab_pecas[self.yy][self.xx+1].tipo!=0 and self.verifica_move(self.xx-1,self.yy)):
+				self.tab.add_peca(self.xx-1,self.yy,self.tab.tab_pecas[self.yy][self.xx+1].tipo,dir=self.tab.tab_pecas[self.yy][self.xx+1].dir)
+				self.tab.tab_pecas[self.yy][self.xx-1].att=True
+		if(dir==3):
+			if(self.tab.tab_pecas[self.yy+1][self.xx].tipo!=0 and self.verifica_move(self.xx,self.yy-1)):
+				self.tab.add_peca(self.xx,self.yy-1,self.tab.tab_pecas[self.yy+1][self.xx].tipo,dir=self.tab.tab_pecas[self.yy+1][self.xx].dir)
+				self.tab.tab_pecas[self.yy-1][self.xx].att=True
+		
 		
 	def mover(self,dir):
 		#print(self.dir)
@@ -168,6 +190,15 @@ class Bloco:
 					pass#print("não pode mover {}".format(self.tipo))
 		except:
 			return False
+	def girar(self,dir,new):
+		if(dir ==0 or dir==2):
+			if(new +1>3):
+				return 0
+			return new +1
+		if(dir ==1 or dir==3):
+			if(new -1<0):
+				return 3
+			return new -1
 	def seleciona(self):
 
 		#xx=int((self.x-self.tab.deslocaMundo[1])/self.tab.grade)
@@ -175,6 +206,7 @@ class Bloco:
 		if(self.tab.tab[self.yy][self.xx].tipo==2):
 			self.select=True
 			self.lembrarPosisao=self.rect
+
 	def solta(self,pos):
 		self.select=False
 		x=int((pos[0]-self.tab.deslocaMundo[0])/self.tab.grade)
@@ -199,6 +231,7 @@ class Bloco:
 	def rasta(self,pos):
 		#print(pos)
 		self.rect = pygame.Rect(pos[0]-self.alt/2,pos[1]-self.larg/2,self.larg,self.alt)
+
 	def update(self):
 		pass
 	def render(self,screen):
@@ -219,3 +252,18 @@ class Bloco:
 		elif(self.tipo==5):
 			#pygame.draw.rect(screen,(190,190,50), self.rect)
 			screen.blit( pygame.transform.rotate(self.sprite[2], self.rotacao_sprite()), self.rect)
+		elif(self.tipo==6):
+			#pygame.draw.rect(screen,(190,190,50), self.rect)
+			screen.blit( pygame.transform.rotate(self.sprite[3], self.rotacao_sprite()), self.rect)
+		elif(self.tipo==7):
+			#pygame.draw.rect(screen,(190,190,50), self.rect)
+			screen.blit( pygame.transform.rotate(self.sprite[5], self.rotacao_sprite()), self.rect)
+		elif(self.tipo==8):
+			#pygame.draw.rect(screen,(190,190,50), self.rect)
+			if(self.dir ==0 or self.dir == 2):
+				screen.blit( pygame.transform.rotate(self.sprite[4], self.rotacao_sprite()), self.rect)
+			else:
+				screen.blit(pygame.transform.flip(self.sprite[4], True, False), self.rect)
+
+		
+		

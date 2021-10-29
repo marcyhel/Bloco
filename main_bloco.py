@@ -4,7 +4,7 @@ import random
 from bloco import *
 from tabuleiro import *
 
-from bloco_move import *
+
 
 class Estados(Enum):
 	jogando=0
@@ -18,14 +18,16 @@ class Main:
 		self.clock = pygame.time.Clock()
 		self.done=False
 		self.estado=Estados.jogando
-
-		self.tab=Tabuleiro(self,15,10,deslocaMundo=[20,20],resolucao=self.resolucao)
+		self.cont_Update=0
+		self.tab=Tabuleiro(self,20,17,deslocaMundo=[100,100],resolucao=self.resolucao)
 
 	def render(self,screen):
 		self.tab.render(screen)
 	def update(self):
-		self.tab.update()
-
+		self.cont_Update+=1
+		if(self.cont_Update>=20):
+			self.tab.update()
+			self.cont_Update=0
 	def rodar(self):
 		while not self.done:
 			for event in pygame.event.get():
@@ -75,7 +77,7 @@ class Main:
 				pos = pygame.mouse.get_pos()
 				self.tab.rasta(pos)
 			self.screen.fill((10,10,10))
-			self.clock.tick(3)
+			self.clock.tick(60)
 
 
 			self.render(self.screen)
