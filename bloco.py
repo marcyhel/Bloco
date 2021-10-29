@@ -12,8 +12,8 @@ class Bloco:
 		self.alt = alt
 		self.larg = larg
 		self.rect = pygame.Rect(self.x,self.y,self.larg,self.alt)
-		self.xx=int((self.x-self.tab.deslocaMundo[1])/self.tab.grade)
-		self.yy=int((self.y-self.tab.deslocaMundo[0])/self.tab.grade)
+		self.xx=int((self.x-self.tab.deslocaMundo[0])/self.tab.grade)
+		self.yy=int((self.y-self.tab.deslocaMundo[1])/self.tab.grade)
 		self.dir=dir
 		self.sprite= [pygame.transform.scale(pygame.image.load('imagens/0.png'), (int(self.alt), int(self.alt))),
 		pygame.transform.scale(pygame.image.load('imagens/1.png'), (int(self.alt), int(self.alt))),
@@ -77,6 +77,7 @@ class Bloco:
 		self.y=y*self.tab.grade+self.tab.deslocaMundo[1]
 		self.xx=int((self.x-self.tab.deslocaMundo[0])/self.tab.grade)
 		self.yy=int((self.y-self.tab.deslocaMundo[1])/self.tab.grade)
+
 		
 	def empurra(self,dir,x,y):
 		try:
@@ -127,25 +128,27 @@ class Bloco:
 			return False
 
 	def duplica_bloco_de_tras(self,dir):
-		
-		if(dir==0):
-			if(self.tab.tab_pecas[self.yy][self.xx-1].tipo!=0 and self.verifica_move(self.xx+1,self.yy)):
-			
-				self.tab.add_peca(self.xx+1,self.yy,self.tab.tab_pecas[self.yy][self.xx-1].tipo,dir=self.tab.tab_pecas[self.yy][self.xx-1].dir)
-				self.tab.tab_pecas[self.yy][self.xx+1].att=True
-			
-		if(dir==1):
-			if(self.tab.tab_pecas[self.yy-1][self.xx].tipo!=0 and self.verifica_move(self.xx,self.yy+1)):
-				self.tab.add_peca(self.xx,self.yy+1,self.tab.tab_pecas[self.yy-1][self.xx].tipo,dir=self.tab.tab_pecas[self.yy-1][self.xx].dir)
-				self.tab.tab_pecas[self.yy+1][self.xx].att=True
-		if(dir==2):
-			if(self.tab.tab_pecas[self.yy][self.xx+1].tipo!=0 and self.verifica_move(self.xx-1,self.yy)):
-				self.tab.add_peca(self.xx-1,self.yy,self.tab.tab_pecas[self.yy][self.xx+1].tipo,dir=self.tab.tab_pecas[self.yy][self.xx+1].dir)
-				self.tab.tab_pecas[self.yy][self.xx-1].att=True
-		if(dir==3):
-			if(self.tab.tab_pecas[self.yy+1][self.xx].tipo!=0 and self.verifica_move(self.xx,self.yy-1)):
-				self.tab.add_peca(self.xx,self.yy-1,self.tab.tab_pecas[self.yy+1][self.xx].tipo,dir=self.tab.tab_pecas[self.yy+1][self.xx].dir)
-				self.tab.tab_pecas[self.yy-1][self.xx].att=True
+		try:
+			if(dir==0):
+				if(self.tab.tab_pecas[self.yy][self.xx-1].tipo!=0 and self.verifica_move(self.xx+1,self.yy) and self.xx-1>=0 and self.yy>=0):
+				
+					self.tab.add_peca(self.xx+1,self.yy,self.tab.tab_pecas[self.yy][self.xx-1].tipo,dir=self.tab.tab_pecas[self.yy][self.xx-1].dir)
+					self.tab.tab_pecas[self.yy][self.xx+1].att=True
+				
+			if(dir==1):
+				if(self.tab.tab_pecas[self.yy-1][self.xx].tipo!=0 and self.verifica_move(self.xx,self.yy+1) and self.xx>=0 and self.yy-1>=0):
+					self.tab.add_peca(self.xx,self.yy+1,self.tab.tab_pecas[self.yy-1][self.xx].tipo,dir=self.tab.tab_pecas[self.yy-1][self.xx].dir)
+					self.tab.tab_pecas[self.yy+1][self.xx].att=True
+			if(dir==2):
+				if(self.tab.tab_pecas[self.yy][self.xx+1].tipo!=0 and self.verifica_move(self.xx-1,self.yy) and self.xx+1>=0 and self.yy>=0):
+					self.tab.add_peca(self.xx-1,self.yy,self.tab.tab_pecas[self.yy][self.xx+1].tipo,dir=self.tab.tab_pecas[self.yy][self.xx+1].dir)
+					self.tab.tab_pecas[self.yy][self.xx-1].att=True
+			if(dir==3):
+				if(self.tab.tab_pecas[self.yy+1][self.xx].tipo!=0 and self.verifica_move(self.xx,self.yy-1) and self.xx>=0 and self.yy+1>=0):
+					self.tab.add_peca(self.xx,self.yy-1,self.tab.tab_pecas[self.yy+1][self.xx].tipo,dir=self.tab.tab_pecas[self.yy+1][self.xx].dir)
+					self.tab.tab_pecas[self.yy-1][self.xx].att=True
+		except:
+			pass
 		
 		
 	def mover(self,dir):
@@ -206,7 +209,8 @@ class Bloco:
 		if(self.tab.tab[self.yy][self.xx].tipo==2):
 			self.select=True
 			self.lembrarPosisao=self.rect
-
+	def clica_direito(self):
+		self.dir=self.girar(0,self.dir)
 	def solta(self,pos):
 		self.select=False
 		x=int((pos[0]-self.tab.deslocaMundo[0])/self.tab.grade)
@@ -261,7 +265,7 @@ class Bloco:
 		elif(self.tipo==8):
 			#pygame.draw.rect(screen,(190,190,50), self.rect)
 			if(self.dir ==0 or self.dir == 2):
-				screen.blit( pygame.transform.rotate(self.sprite[4], self.rotacao_sprite()), self.rect)
+				screen.blit( self.sprite[4], self.rect)
 			else:
 				screen.blit(pygame.transform.flip(self.sprite[4], True, False), self.rect)
 

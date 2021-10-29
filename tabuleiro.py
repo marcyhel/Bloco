@@ -14,12 +14,14 @@ class Tabuleiro:
 		self.tab_pecas = []
 		self.alt = alt
 		self.larg = larg
-		self.grade=resolucao[0]/35
+		self.grade=int(resolucao[0]/35)
 		self.resolucao = resolucao
 		self.deslocaMundo=deslocaMundo
+		self.peca_flutua_botao=0
+		self.play=False
 		self.inicializa()
 		
-		self.area_move(inix=0,fimx=17,iniy=0,fimy=17)
+		self.area_move(inix=0,fimx=25,iniy=0,fimy=18)
 		self.area_move(inix=5,fimx=9,iniy=6,fimy=9)
 		self.add_peca(0,3,3,dir=0)
 		self.add_peca(5,0,3,dir=1)
@@ -80,7 +82,12 @@ class Tabuleiro:
 				if(j.select):
 					j.solta(pos)
 				
-
+	def clica_direito(self,pos):
+		for i in self.tab_pecas:
+			for j in i:
+				if(j.tipo>=3):
+					if(j.rect.collidepoint(pos)):
+						j.clica_direito()
 	def clica(self,pos):
 		for i in self.tab_pecas:
 			for j in i:
@@ -89,19 +96,25 @@ class Tabuleiro:
 						j.seleciona()
 	
 	def update(self):
-		for i in self.tab_pecas:
-			for j in i:
-				if(j.tipo==8):
+		if(self.play):
+			for i in self.tab_pecas:
+				for j in i:
+					if(j.tipo==8):
+						if(not j.att):
+							j.update()
+			for i in self.tab_pecas:
+				for j in i:
+					if(j.tipo==5):
+						if(not j.att):
+							j.update()
+			for i in self.tab_pecas:
+				for j in i:
 					if(not j.att):
 						j.update()
-		for i in self.tab_pecas:
-			for j in i:
-				if(not j.att):
-					j.update()
-		for i in self.tab_pecas:
-			for j in i:
-				
-				j.reset()
+			for i in self.tab_pecas:
+				for j in i:
+					
+					j.reset()
 					
 	def render(self,screen):
 		try:
@@ -117,5 +130,9 @@ class Tabuleiro:
 					j.render(screen)
 			if(aux!=0):
 				aux.render(screen)
+		except:
+			pass
+		try:
+			self.peca_flutua_botao.render(screen)
 		except:
 			pass
