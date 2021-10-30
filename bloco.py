@@ -5,13 +5,14 @@ import copy
 #2  <-
 #3  ^
 class Bloco:
-	def __init__(self,tab,x,y,alt,larg,dir=0,tipo=1):
+	def __init__(self,tab,x,y,alt,larg,dir=0,tipo=1,config=[]):
 		self.tab=tab
 		self.x = x
 		self.y = y
 		self.alt = alt
 		self.larg = larg
 		self.rect = pygame.Rect(self.x,self.y,self.larg,self.alt)
+		self.config=config
 		self.xx=int((self.x-self.tab.deslocaMundo[0])/self.tab.grade)
 		self.yy=int((self.y-self.tab.deslocaMundo[1])/self.tab.grade)
 		self.dir=dir
@@ -35,7 +36,7 @@ class Bloco:
 		self.att=False
 	def verifica_tab(self,x,y):
 		try:
-			if(self.tab.tab[y][x].tipo==2 and self.tab.tab_pecas[y][x].tipo==0):
+			if(self.tab.tab[y][x].tipo==2 and self.tab.tab_pecas[y][x].tipo==0  and x>=0 and y>=0):
 				return True
 			else:
 				return False
@@ -133,20 +134,20 @@ class Bloco:
 			if(dir==0):
 				if(self.tab.tab_pecas[self.yy][self.xx-1].tipo!=0 and self.verifica_move(self.xx+1,self.yy) and self.xx-1>=0 and self.yy>=0):
 				
-					self.tab.add_peca(self.xx+1,self.yy,self.tab.tab_pecas[self.yy][self.xx-1].tipo,dir=self.tab.tab_pecas[self.yy][self.xx-1].dir)
+					self.tab.add_peca(self.xx+1,self.yy,self.tab.tab_pecas[self.yy][self.xx-1].tipo,dir=self.tab.tab_pecas[self.yy][self.xx-1].dir,config=self.tab.tab_pecas[self.yy][self.xx-1].config)
 					self.tab.tab_pecas[self.yy][self.xx+1].att=True
 				
 			if(dir==1):
 				if(self.tab.tab_pecas[self.yy-1][self.xx].tipo!=0 and self.verifica_move(self.xx,self.yy+1) and self.xx>=0 and self.yy-1>=0):
-					self.tab.add_peca(self.xx,self.yy+1,self.tab.tab_pecas[self.yy-1][self.xx].tipo,dir=self.tab.tab_pecas[self.yy-1][self.xx].dir)
+					self.tab.add_peca(self.xx,self.yy+1,self.tab.tab_pecas[self.yy-1][self.xx].tipo,dir=self.tab.tab_pecas[self.yy-1][self.xx].dir,config=self.tab.tab_pecas[self.yy-1][self.xx].config)
 					self.tab.tab_pecas[self.yy+1][self.xx].att=True
 			if(dir==2):
 				if(self.tab.tab_pecas[self.yy][self.xx+1].tipo!=0 and self.verifica_move(self.xx-1,self.yy) and self.xx+1>=0 and self.yy>=0):
-					self.tab.add_peca(self.xx-1,self.yy,self.tab.tab_pecas[self.yy][self.xx+1].tipo,dir=self.tab.tab_pecas[self.yy][self.xx+1].dir)
+					self.tab.add_peca(self.xx-1,self.yy,self.tab.tab_pecas[self.yy][self.xx+1].tipo,dir=self.tab.tab_pecas[self.yy][self.xx+1].dir,config=self.tab.tab_pecas[self.yy][self.xx+1].config)
 					self.tab.tab_pecas[self.yy][self.xx-1].att=True
 			if(dir==3):
 				if(self.tab.tab_pecas[self.yy+1][self.xx].tipo!=0 and self.verifica_move(self.xx,self.yy-1) and self.xx>=0 and self.yy+1>=0):
-					self.tab.add_peca(self.xx,self.yy-1,self.tab.tab_pecas[self.yy+1][self.xx].tipo,dir=self.tab.tab_pecas[self.yy+1][self.xx].dir)
+					self.tab.add_peca(self.xx,self.yy-1,self.tab.tab_pecas[self.yy+1][self.xx].tipo,dir=self.tab.tab_pecas[self.yy+1][self.xx].dir,config=self.tab.tab_pecas[self.yy+1][self.xx].config)
 					self.tab.tab_pecas[self.yy-1][self.xx].att=True
 		except:
 			pass

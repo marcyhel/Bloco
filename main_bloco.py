@@ -22,7 +22,7 @@ class Main:
 		self.cont_Update=0
 		self.tab=Tabuleiro(self,25,18,deslocaMundo=[100,50],resolucao=self.resolucao)
 
-		self.botoes=[BotaoPlay(self,50,600,50),Botao(self,20,100,50,3),Botao(self,20,170,50,5),Botao(self,20,240,50,6),Botao(self,20,310,50,7),Botao(self,20,390,50,8),Botao(self,20,460,50,4)]
+		self.botoes=[BotaoPlay(self,50,600,50),Botao(self,20,30,50,9),Botao(self,20,100,50,3),Botao(self,20,170,50,5),Botao(self,20,240,50,6),Botao(self,20,310,50,7),Botao(self,20,390,50,8),Botao(self,20,460,50,4)]
 
 	def render(self,screen):
 		self.tab.render(screen)

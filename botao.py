@@ -7,6 +7,7 @@ from bloco_duplica import *
 from bloco_estatico import *
 from bloco_direcional import *
 from bloco_gira import *
+from bloco_adiciona import *
 
 
 class Botao:
@@ -35,6 +36,8 @@ class Botao:
 				self.tab.tab.peca_flutua_botao=BlocoDirecional(self.tab.tab,self.x,self.y,self.tab.tab.tab_pecas[0][0].alt,self.tab.tab.tab_pecas[0][0].larg,dir=0)
 			if(self.tipo==8):
 				self.tab.tab.peca_flutua_botao=BlocoGira(self.tab.tab,self.x,self.y,self.tab.tab.tab_pecas[0][0].alt,self.tab.tab.tab_pecas[0][0].larg,dir=0)
+			if(self.tipo==9):
+				self.tab.tab.peca_flutua_botao=BlocoAdiciona(self.tab.tab,self.x,self.y,self.tab.tab.tab_pecas[0][0].alt,self.tab.tab.tab_pecas[0][0].larg,dir=0)
 			if(self.tipo==4):
 				self.tab.tab.peca_flutua_botao=Bloco(self.tab.tab,self.x,self.y,self.tab.tab.tab_pecas[0][0].alt,self.tab.tab.tab_pecas[0][0].larg,tipo=4,dir=0)
 
@@ -59,5 +62,7 @@ class Botao:
 			pygame.draw.rect(screen,(190,190,50), self.rect)
 		if(self.tipo==8):
 			pygame.draw.rect(screen,(250,100,50), self.rect)
+		if(self.tipo==9):
+			pygame.draw.rect(screen,(160,50,150), self.rect)
 		if(self.tipo==4):
 			pygame.draw.rect(screen,(250,250,50), self.rect)

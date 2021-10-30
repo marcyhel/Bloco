@@ -22,20 +22,20 @@ class Tabuleiro:
 		self.play=False
 		self.inicializa()
 		
-		self.area_move(inix=0,fimx=25,iniy=0,fimy=18)
+		self.area_move(inix=0,fimx=10,iniy=0,fimy=8)
 		self.area_move(inix=5,fimx=9,iniy=6,fimy=9)
 		self.add_peca(0,3,3,dir=0)
 		self.add_peca(5,0,3,dir=1)
 		#for i in range(5):
 		#	self.add_peca(random.randint(0,8),random.randint(0,8),3,dir=random.randint(0,3))
-		self.add_peca(2,2,4)
-		self.add_peca(4,3,4)
-		self.add_peca(8,3,4)
+		#self.add_peca(2,2,4)
+		#self.add_peca(4,3,4)
+		#self.add_peca(8,3,4)
 
-		self.add_peca(9,8,4)
-		self.add_peca(11,8,4)
+		#self.add_peca(9,8,4)
+		self.add_peca(15,15,4)
 
-		self.add_peca(10,8,5,dir=1)
+		self.add_peca(13,14,5,dir=1)
 
 		self.add_peca(0,0,9)
 		#self.add_peca(15,8,5,dir=0)
@@ -53,7 +53,8 @@ class Tabuleiro:
 				aux2.append(Bloco(self,j*self.grade+self.deslocaMundo[0],i*self.grade+self.deslocaMundo[1],self.grade-1,self.grade-1,tipo=0))
 			self.tab_pecas.append(aux2)
 			self.tab.append(aux)
-	def add_peca(self,x,y,tipo,dir=0):
+	def add_peca(self,x,y,tipo,dir=0,config=[]):
+		#print(config)
 		if(tipo==3):
 			self.tab_pecas[y][x]=BlocoMove(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,dir=dir)
 		if(tipo==5):
@@ -65,7 +66,7 @@ class Tabuleiro:
 		if(tipo==8):
 			self.tab_pecas[y][x]=BlocoGira(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,dir=dir)
 		if(tipo==9):
-			self.tab_pecas[y][x]=BlocoAdiciona(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,dir=dir)
+			self.tab_pecas[y][x]=BlocoAdiciona(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,dir=dir,config=config)
 		if(tipo==0):
 			self.tab_pecas[y][x]=Bloco(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,tipo=0,dir=dir)
 		if(tipo==4):
@@ -129,7 +130,7 @@ class Tabuleiro:
 							j.update()
 			for i in self.tab_pecas:
 				for j in i:
-					if(j.tipo==5):
+					if(j.tipo==5 or j.tipo==9):
 						if(not j.att):
 							j.update()
 			for i in self.tab_pecas:

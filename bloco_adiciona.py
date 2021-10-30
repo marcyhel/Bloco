@@ -4,13 +4,14 @@ import random
 from bloco import *
 from tabuleiro import *
 class BlocoAdiciona(Bloco):
-	def __init__(self,tab,x,y,alt,larg,dir=0):
-		super().__init__(tab,x,y,alt,larg,tipo=9,dir=dir)
+	def __init__(self,tab,x,y,alt,larg,dir=0,config=[]):
+		super().__init__(tab,x,y,alt,larg,tipo=9,dir=dir,config=config)
 		self.mouse=False
 		self.listaItems=[3,4,5,6,7,8]
 		self.scaleItem=18
 		self.listaRectItems=[]
 		self.itemSelect=0
+		self.verifica_config()
 		self.bordaSelect=3
 		self.att_rect()
 		
@@ -25,8 +26,11 @@ class BlocoAdiciona(Bloco):
 		pygame.transform.scale(pygame.image.load('imagens/7.png'), (int(self.scaleItem), int(self.scaleItem))),
 		pygame.transform.scale(pygame.image.load('imagens/8.png'), (int(self.scaleItem), int(self.scaleItem))),
 		]
-		
-	
+	def verifica_config(self):
+		if(len(self.config)!=0):
+			self.itemSelect=self.config[0]
+	def att_config(self):
+		self.config=[self.itemSelect]
 	def att_rect(self):
 		self.listaRectItems=[]
 		for i in range(len(self.listaItems)):
@@ -43,12 +47,15 @@ class BlocoAdiciona(Bloco):
 			self.itemSelect+=1
 			if(self.itemSelect>=len(self.listaItems)):
 				self.itemSelect=0
+
+			self.att_config()
 	def rola_baixo(self):
 		if(self.mouse):
 			
 			self.itemSelect-=1
 			if(self.itemSelect<0):
 				self.itemSelect=len(self.listaItems)-1
+			self.att_config()
 	def render_balao_menu(self,screen):
 		if(self.mouse and not self.select):
 			self.att_rect()
@@ -80,24 +87,25 @@ class BlocoAdiciona(Bloco):
 		self.tab.add_peca(x,y,self.listaItems[self.itemSelect],dir=self.dir)
 		self.tab.tab_pecas[y][x].att=True
 	def update(self):	
+		#print(self.config)
 		self.att=True
 		if(self.dir==0):
-			if(not self.verifica_move(self.xx-1,self.yy)):
+			if(not self.verifica_tab(self.xx-1,self.yy)  and (self.xx-1 >=0 and self.xx-1 <len(self.tab.tab_pecas[0])) and (self.yy >=0 and self.yy <len(self.tab.tab_pecas))):
 				self.empurra(self.dir,self.xx+1,self.yy)
 				if(self.verifica_move(self.xx+1,self.yy)):
 					self.add_item(self.xx+1,self.yy)
 		elif(self.dir==1):
-			if(not self.verifica_move(self.xx,self.yy-1)):
+			if(not self.verifica_move(self.xx,self.yy-1) and (self.xx >=0 and self.xx <len(self.tab.tab_pecas[0])) and (self.yy-1 >=0 and self.yy-1 <len(self.tab.tab_pecas))):
 				self.empurra(self.dir,self.xx,self.yy+1)
 				if(self.verifica_move(self.xx,self.yy+1)):
 					self.add_item(self.xx,self.yy+1)
 		elif(self.dir==2):
-			if(not self.verifica_move(self.xx+1,self.yy)):
+			if(not self.verifica_move(self.xx+1,self.yy)  and (self.xx+1 >=0 and self.xx+1 <len(self.tab.tab_pecas[0])) and (self.yy >=0 and self.yy <len(self.tab.tab_pecas))):
 				self.empurra(self.dir,self.xx-1,self.yy)
 				if(self.verifica_move(self.xx-1,self.yy)):
 					self.add_item(self.xx-1,self.yy)
 		elif(self.dir==3):
-			if(not self.verifica_move(self.xx,self.yy+1)):
+			if(not self.verifica_move(self.xx,self.yy+1)  and (self.xx >=0 and self.xx <len(self.tab.tab_pecas[0])) and (self.yy+1 >=0 and self.yy+1 <len(self.tab.tab_pecas))):
 				self.empurra(self.dir,self.xx,self.yy-1)
 				if(self.verifica_move(self.xx,self.yy-1)):
 					self.add_item(self.xx,self.yy-1)
