@@ -33,11 +33,24 @@ class BlocoAdiciona(Bloco):
 			self.listaRectItems.append(pygame.Rect((self.x-50)+i*22,self.y-43,self.scaleItem,self.scaleItem))
 	def mouse_cima(self):
 		self.mouse=True
-		print("mouse cimaaa")
+	
 	def mouse_nao_cima(self):
 		self.mouse=False
-	def render_balao_menu(self,screen):
+
+	def rola_cima(self):
 		if(self.mouse):
+			
+			self.itemSelect+=1
+			if(self.itemSelect>=len(self.listaItems)):
+				self.itemSelect=0
+	def rola_baixo(self):
+		if(self.mouse):
+			
+			self.itemSelect-=1
+			if(self.itemSelect<0):
+				self.itemSelect=len(self.listaItems)-1
+	def render_balao_menu(self,screen):
+		if(self.mouse and not self.select):
 			self.att_rect()
 			pygame.draw.rect(screen,(100,100,120), pygame.Rect(self.x-60,self.y-60,self.larg+120,self.alt+25))
 			pygame.draw.rect(screen,(200,50,50), pygame.Rect(self.listaRectItems[self.itemSelect].x-self.bordaSelect,self.listaRectItems[self.itemSelect].y-self.bordaSelect,self.scaleItem+self.bordaSelect*2,self.scaleItem+self.bordaSelect*2))
@@ -63,10 +76,31 @@ class BlocoAdiciona(Bloco):
 					screen.blit( self.spriteItens[4], self.listaRectItems[c])
 				
 
-
+	def add_item(self,x,y):
+		self.tab.add_peca(x,y,self.listaItems[self.itemSelect],dir=self.dir)
+		self.tab.tab_pecas[y][x].att=True
 	def update(self):	
 		self.att=True
-
+		if(self.dir==0):
+			if(not self.verifica_move(self.xx-1,self.yy)):
+				self.empurra(self.dir,self.xx+1,self.yy)
+				if(self.verifica_move(self.xx+1,self.yy)):
+					self.add_item(self.xx+1,self.yy)
+		elif(self.dir==1):
+			if(not self.verifica_move(self.xx,self.yy-1)):
+				self.empurra(self.dir,self.xx,self.yy+1)
+				if(self.verifica_move(self.xx,self.yy+1)):
+					self.add_item(self.xx,self.yy+1)
+		elif(self.dir==2):
+			if(not self.verifica_move(self.xx+1,self.yy)):
+				self.empurra(self.dir,self.xx-1,self.yy)
+				if(self.verifica_move(self.xx-1,self.yy)):
+					self.add_item(self.xx-1,self.yy)
+		elif(self.dir==3):
+			if(not self.verifica_move(self.xx,self.yy+1)):
+				self.empurra(self.dir,self.xx,self.yy-1)
+				if(self.verifica_move(self.xx,self.yy-1)):
+					self.add_item(self.xx,self.yy-1)
 		
 			
 		

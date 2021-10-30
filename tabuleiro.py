@@ -107,6 +107,18 @@ class Tabuleiro:
 				if(j.tipo>=3):
 					if(j.rect.collidepoint(pos)):
 						j.seleciona()
+	def rola_cima(self,pos):
+		for i in self.tab_pecas:
+			for j in i:
+				if(j.tipo>=3):
+					if(j.rect.collidepoint(pos)):
+						j.rola_cima()
+	def rola_baixo(self,pos):
+		for i in self.tab_pecas:
+			for j in i:
+				if(j.tipo>=3):
+					if(j.rect.collidepoint(pos)):
+						j.rola_baixo()
 	
 	def update(self):
 		if(self.play):

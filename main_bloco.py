@@ -70,10 +70,11 @@ class Main:
 
 					if event.button == 4:
 						print('rola Cima')
+						self.tab.rola_cima(pos)
 						#play.RolarItem('cima')
 					elif event.button == 5:
 						print('rola Baixo')
-
+						self.tab.rola_baixo(pos)
 						#play.RolarItem('baixo')
 				
 					

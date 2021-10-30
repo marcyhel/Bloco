@@ -245,6 +245,10 @@ class Bloco:
 		
 	def mouse_nao_cima(self):
 		pass
+	def rola_cima(self):
+		pass
+	def rola_baixo(self):
+		pass
 	def update(self):
 		pass
 	def render(self,screen):
