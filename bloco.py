@@ -23,6 +23,7 @@ class Bloco:
 		pygame.transform.scale(pygame.image.load('imagens/5.png'), (int(self.alt), int(self.alt))),
 		pygame.transform.scale(pygame.image.load('imagens/6.png'), (int(self.alt), int(self.alt))),
 		pygame.transform.scale(pygame.image.load('imagens/7.png'), (int(self.alt), int(self.alt))),
+		pygame.transform.scale(pygame.image.load('imagens/8.png'), (int(self.alt), int(self.alt))),
 		]
 		self.tipo=tipo
 		self.select=False
@@ -202,6 +203,7 @@ class Bloco:
 			if(new -1<0):
 				return 3
 			return new -1
+
 	def seleciona(self):
 
 		#xx=int((self.x-self.tab.deslocaMundo[1])/self.tab.grade)
@@ -209,6 +211,7 @@ class Bloco:
 		if(self.tab.tab[self.yy][self.xx].tipo==2):
 			self.select=True
 			self.lembrarPosisao=self.rect
+
 	def clica_direito(self):
 		self.dir=self.girar(0,self.dir)
 	def solta(self,pos):
@@ -235,7 +238,13 @@ class Bloco:
 	def rasta(self,pos):
 		#print(pos)
 		self.rect = pygame.Rect(pos[0]-self.alt/2,pos[1]-self.larg/2,self.larg,self.alt)
-
+	def render_balao_menu(self,screen):
+		pass
+	def mouse_cima(self):
+		pass
+		
+	def mouse_nao_cima(self):
+		pass
 	def update(self):
 		pass
 	def render(self,screen):
@@ -268,6 +277,10 @@ class Bloco:
 				screen.blit( self.sprite[4], self.rect)
 			else:
 				screen.blit(pygame.transform.flip(self.sprite[4], True, False), self.rect)
+		elif(self.tipo==9):
+			#pygame.draw.rect(screen,(190,190,50), self.rect)
+			self.render_balao_menu(screen)
+			screen.blit( pygame.transform.rotate(self.sprite[8], self.rotacao_sprite()), self.rect)
 
 		
 		

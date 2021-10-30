@@ -5,6 +5,7 @@ from bloco_duplica import *
 from bloco_estatico import *
 from bloco_direcional import *
 from bloco_gira import *
+from bloco_adiciona import *
 
 import random
 class Tabuleiro:
@@ -35,6 +36,8 @@ class Tabuleiro:
 		self.add_peca(11,8,4)
 
 		self.add_peca(10,8,5,dir=1)
+
+		self.add_peca(0,0,9)
 		#self.add_peca(15,8,5,dir=0)
 		#self.add_peca(15,15,6,dir=0)
 		#self.add_peca(15,19,7,dir=0)
@@ -61,6 +64,8 @@ class Tabuleiro:
 			self.tab_pecas[y][x]=BlocoDirecional(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,dir=dir)
 		if(tipo==8):
 			self.tab_pecas[y][x]=BlocoGira(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,dir=dir)
+		if(tipo==9):
+			self.tab_pecas[y][x]=BlocoAdiciona(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,dir=dir)
 		if(tipo==0):
 			self.tab_pecas[y][x]=Bloco(self,self.tab_pecas[y][x].x,self.tab_pecas[y][x].y,self.tab_pecas[y][x].alt,self.tab_pecas[y][x].larg,tipo=0,dir=dir)
 		if(tipo==4):
@@ -88,6 +93,14 @@ class Tabuleiro:
 				if(j.tipo>=3):
 					if(j.rect.collidepoint(pos)):
 						j.clica_direito()
+	def mouse_cima(self,pos):
+		for i in self.tab_pecas:
+			for j in i:
+				if(j.tipo>=3):
+					if(j.rect.collidepoint(pos)):
+						j.mouse_cima()
+					else:
+						j.mouse_nao_cima()
 	def clica(self,pos):
 		for i in self.tab_pecas:
 			for j in i:

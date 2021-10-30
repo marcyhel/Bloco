@@ -19,8 +19,8 @@ class BotaoPlay:
 		self.press=False
 		self.cont_press=0
 		#self.tipo=tipo
-		self.sprite= [pygame.transform.scale(pygame.image.load('imagens/b1.png'), (int(self.size), int(self.size))),
-		pygame.transform.scale(pygame.image.load('imagens/b2.png'), (int(self.size), int(self.size))),]
+		self.sprite= [pygame.transform.scale(pygame.image.load('imagens/play.png'), (int(self.size), int(self.size))),
+		pygame.transform.scale(pygame.image.load('imagens/stop.png'), (int(self.size), int(self.size))),]
 	
 	def clica(self,pos):
 
@@ -36,5 +36,9 @@ class BotaoPlay:
 
 		
 	def render(self,screen):
-		
-			pygame.draw.rect(screen,(250,250,50), self.rect)
+		pygame.draw.rect(screen,(250,250,50), self.rect)
+		if(self.tab.tab.play):
+			screen.blit( self.sprite[1], self.rect)
+			
+		else:
+			screen.blit( self.sprite[0], self.rect)

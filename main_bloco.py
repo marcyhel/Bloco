@@ -103,6 +103,11 @@ class Main:
 					
 				except :
 					pass
+				try:
+					self.tab.mouse_cima(pos)
+					
+				except :
+					pass
 			self.screen.fill((10,10,10))
 			self.clock.tick(60)
 
